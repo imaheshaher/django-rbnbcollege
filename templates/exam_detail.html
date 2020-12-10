@@ -1,0 +1,124 @@
+{% load static %}
+{% include 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam detail</title>
+    <style>
+        body {
+            background-image: url("{% static 'images/bgimage.jpg' %}");
+            color: white;
+        }
+        .bg {
+            /* The image used */
+            background-image: url("{% static 'images/bgimage.jpg' %}");
+          
+            /* Half height */
+            height: 50%;
+          
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            color: white;
+          }
+        .card-f {
+            margin: 0 auto;
+            /* Added */
+            float: none;
+            /* Added */
+            margin-bottom: 10px;
+            /* Added */
+            background-color: white;
+            margin: auto;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mt-2"><u>Current Exam </u></h2>
+        {% if not current_exam %}
+        <h2>No exam found</h2>
+        {% endif %}
+        
+    {% for cexam in current_exam %}
+    <div class="card card-f font-weight-bold mt-2 bg" style="width: 18rem; height: 22rem;">
+        <div class="row">
+            <div class="col ml-3">
+                Exam Id :
+            </div>
+            <div class="col">
+                {{cexam.id}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ml-3">
+                Subject:
+            </div>
+            <div class="col">
+                {{cexam.subject}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ml-3">
+                Date :
+            </div>
+            <div class="col">
+                {{cexam.exam_date}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ml-3">
+                Start Time:
+            </div>
+            <div class="col">
+                {{cexam.start_time}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ml-3">
+                End Time : 
+            </div>
+            <div class="col">
+                {{cexam.end_time}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col ml-3">
+                Time Limit :
+            </div>
+            <div class="col">
+                {{cexam.exam_time}}minute
+            </div>
+        </div>
+     
+     
+    <hr>
+    <p class="text-center">Action</p>
+    
+    {% if cexam.post_exam %}
+    <a class="btn btn-info btn-sm mb-2" href="{% url 'teacher_exam_pannel' cexam.id %}">Questions </a>
+    <a class="btn btn-success btn-sm mb-2" href="{% url 'all_student_result' cexam.id %}">see results</a>
+    <a class="btn btn-danger btn-sm mb-2" href="{% url 'end_exam' cexam.id %}">End Exam</a>
+    {% else %}
+    <a class="btn btn-success btn-sm mt-2" href="{% url 'create_new_exam' cexam.subject.id %}">Update </a>
+    <a class="btn btn-info btn-sm mt-2" href="{% url 'add_question' cexam.subject.id %}">Add Question</a>
+    <a class="btn btn-secondary btn-sm  mt-2" href="{% url 'teacher_exam_pannel' cexam.id %}">Questions </a>
+    <a class="btn btn-primary btn-sm mt-2" href="{% url 'post_exam' cexam.id %}">Post Exam</a>
+    <a class="btn btn-danger btn-sm mt-2" href="{% url 'cancel_exam' cexam.id %}">Cancel Exam</a>
+    {% endif %}
+    
+    </div>
+    <div class="d-flex justify-content-around"></div>
+    
+
+    {% endfor %}
+
+    
+    </div>
+</body>
+</html>

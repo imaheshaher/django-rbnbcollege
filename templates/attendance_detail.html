@@ -1,0 +1,43 @@
+{% include 'base.html' %}
+
+<div class="container">
+<div class="table-responsive">
+    <table class="table mr-5 mt-5" id="myTable">
+        <thead class="thead-dark text-uppercase font-weight-bold">
+            <tr>
+            <th scope="col">No</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Class</th>
+            <th scope="col">Start time</th>
+            <th scope="col">End time</th>
+            <th scope="col">Date</th>
+            <th scope="col">Present</th>
+            <th scope="col">Absent</th>
+            
+            </tr>
+            {% for attend_data in attendance_data %}
+            <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{attend_data.subject}}</td>
+            <td>{{attend_data.subject.class_name}}{{attend_data.subject.department_name}}</td>
+            <td>{{attend_data.lect_start_time}}</td>
+            <td>{{attend_data.lect_end_time}}</td>
+            <td><a href="{% url 'attendance_report' attend_data.subject.id attend_data.id %}">
+            {{attend_data.attendance_date}}</a></td>
+            {% for i in attend_list %}
+                {% for p,a in i.items %}
+                {% ifequal attend_data.id p  %}
+                <td>{{a.0}}</td>
+                <td>{{a.1}}</td>
+                {% endifequal %}
+                {% endfor %}
+                
+                {% endfor %}
+            
+            </tr>
+            
+            {% endfor %}
+        </thead>
+        </table>
+        </div>
+</div>

@@ -1,0 +1,81 @@
+{% include 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result</title>
+</head>
+<body>
+    <div class="container">
+    <h3>
+        Teacher : {{exam.teacher.user.last_name}} {{exam.teacher.user.first_name}}  <br>
+        Subject : {{exam.subject}} <br> 
+  
+
+         Conducted on Date : {{exam.exam_date}}
+    </h3>
+    
+    <hr>
+    <input type="text" id="myInput" class="form-control mb-2" placeholder="Search student">
+    <div class="table-responsive">
+    <table class="table mr-5 " id="myTable">
+        <thead class="thead-dark text-uppercase">
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Student Name</th>
+            
+            <th scope="col">Marks</th>
+            <th scope="col">Out of marks</th>
+            <th>See Answer</th>
+            
+          </tr>
+        </thead>
+        <tbody class="text-uppercase font-weight-bold">
+          
+            {% for s in student_result %}
+            <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{s.student.user.first_name}} {{s.student.user.last_name}}</td>
+            <td>{{s.student_mark}}</td>
+            <td>{{s.out_of_mark}}</td>
+            <td><a href="{% url 'calculate_result' eid=exam.id  sid=s.student.id %}">Result</a></td>
+            
+          </tr>
+        {% endfor %}
+            
+        <tr>
+            <td colspan="4" style="text-align: center; color:red">Not Attempt Student</td>
+        </tr>
+             {% for nots in not_attempt_student %}   
+             <tr>
+                 <td>{{forloop.counter}}</td>
+                <td>{{nots.user.first_name}} {{nots.user.last_name}}</td>
+                <td>0</td>
+                <td>{{out_of_mark}}</td>
+                <td>not available</td>
+             </tr>
+             {% endfor %}
+            
+            
+          
+         
+        </tbody>
+      </table>
+    </div>
+ 
+
+
+</div>
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+</body>
+</html>

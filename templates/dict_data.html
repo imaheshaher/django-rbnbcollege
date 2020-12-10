@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dict data</title>
+</head>
+<body>
+    {% for i,j in data.items %}
+    {% ifequal j.correct j.stud %}
+    correct {{j.stud}}
+
+    {% else %}
+    incorrect {{j.stud}}
+    {% endifequal %}
+    <br>
+    true ans {{j.correct}}
+    <br>
+    {% endfor %}
+</body>
+</html>

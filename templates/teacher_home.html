@@ -1,0 +1,125 @@
+{% load static %}
+{% include 'base.html' %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            
+        }
+        .containers {
+            overflow: auto;
+            
+            height: 50vh;
+            padding: 25px;
+       
+        }
+        .receive {
+         
+         
+            background: #ebebeb none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #646464;
+            font-size: 14px;
+            margin: 0;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+    
+    }
+    .inbox {
+        background-color: gray;
+    }
+    .bg {
+        /* The image used */
+        background-image: url("{% static 'images/bgimage.jpg' %}");
+      
+        /* Half height */
+        height: 50%;
+      
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        color: white;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+  
+    <form class="form-control bg" method="POST">
+        {% csrf_token %}
+    <h4 class="my-2 mt-4">Add Subject To Teach</h4>
+    <a href="{% url 'teacher_info' %}" class="btn btn-primary btn-sm">Add here</a>
+    <!-- {{form.subject|add_class:'form-control col-md-2'}}
+    <input type="submit" class="btn btn-primary mt-2" value="add"> -->
+</form>
+<h3  style="background-color: gray;text-align: center; color:white   " class="mt-2">SUBJECTS</h3>
+{% for st in teacher_data %}
+<div class="row mb-2">
+<div class="col">
+<h5><li> {{st.subject}} </li></h5>
+</div>
+<!-- <div class="col">
+    <a class ="btn btn-danger mx-auto" href="{% url 'delete_subject' st.id %}">delete</a>
+</div> -->
+</div>
+{% endfor %}
+
+<hr>
+<div class="text-center mt-3">
+<h2><a class="btn btn-info btn-lg" href="{% url 'teacher_profile' %}">Dashboard</a></h2>
+<a class="btn btn-secondary btn-lg" href="{% url 'teacher_notice' %}">Add Notice</a>
+</div>
+<div class="containers">
+<div class="inbox">
+    {% for ndata in notice_data %}
+    <div class="receive">
+        <ul class="list-group" id="myUL">
+        <li class="list-group-item">
+            {% if ndata.teacher.user.id is request.user.id %}
+            <div class="float-left">
+                <a href="{% url 'delete_notice' ndata.id %}" class="btn btn-danger btn-sm  " style="color: white;">delete</a>
+             </div>
+             {% endif %}
+        <div class="float-right">
+           {{ndata.notice_date}}
+
+           {{ndata.notice_time}}
+            
+        </div>
+        <br>
+        <hr>
+       <h5 class="mt-2">{{ndata.notice_class}} :
+           {{ndata.notice_description}}</h5>
+       
+        {% if ndata.notice_image %}
+        <hr>
+     <a href="/bcs/{{ndata.notice_image.url}}">   <img src="/bcs/{{ ndata.notice_image.url }}" class="d-block w-100" alt="..."></a>
+        {% endif %}
+        <hr>
+        
+        {% if ndata.notice_file %}
+        <h4>Attachment::</h4>
+        <a href="/bcs/{{ndata.notice_file.url}}">{{ndata.notice_file}}</a>
+        {% endif %}
+       <div class="float-right">
+        
+       </div>
+    </li>
+    </ul>
+    </div>
+    
+    {% endfor %}
+    </div>
+    </div>
+
+
+</div>
+</body>
+</html>

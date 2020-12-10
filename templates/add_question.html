@@ -1,0 +1,102 @@
+{% include 'base.html' %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add question</title>
+</head>
+<script>
+    list=['mahesh','aher']
+</script>
+
+<body>
+    <div class="container">
+      
+    <p class="font-weight-bold">
+    <h4>
+   <p style="background-color: gray;text-align: center; color:white   " > Add question here</p>
+    
+    Subject: {{subject}}
+        <br>
+    Class : {{subject.class_name}}
+        <br>
+
+    
+    <u>Question will be multiple choice type</u></h4>
+</p>
+<hr>
+    
+    <form method="POST" class="form-control">
+        {% csrf_token %}
+        <p class="text-uppercase font-weight-bold"> 
+      
+        Question : <input type="text" class="form-control" name="question_text">
+        <br>
+       <p  style="background-color: gray;text-align: center; color:white   "> Note: You also select a radio button which answer is correct</p>
+        
+        <table>
+        <div>
+        
+      <td >  A.</td><td ><input type="text" name="option_1" >
+        
+        <input type="radio" name="correct_answer" value="A" required="check">
+        <br></td>
+        </tr>
+        <tr>
+       <td> B.</td><td><input type="text" name="option_2" >
+        <input type="radio" name="correct_answer" value="B" >
+        <br></td>
+       </tr>
+       <tr>
+       <td> C.</td><td><input type="text" name="option_3" >
+        <input type="radio" name="correct_answer" value="C">
+        <br></td>
+    </tr>
+    <tr>
+       <td> D.</td><td><input type="text" name="option_4" >
+        <input type="radio" name="correct_answer" value="D">
+        <br></td>
+    </tr>
+        <tr>
+        
+        <!-- <td>correct ans</td><td> <input type="text" name="correct_answer"></td> -->
+  
+    </tr>
+        </div>
+    </table>
+        <input type="submit" value="Add Question" class="btn btn-primary mx-3 mt-2">
+        <a href= "{% url 'take_exam' exam.subject.id %}" class="btn btn-info mx-3 mt-2 flaot-right">Back</a>
+    </p>
+    </form>
+    
+    <a  class="btn btn-success mt-2 my-2" href="{% url 'post_exam' exam.id %}">Post exam</a>
+    <a  class="btn btn-danger mt-2 my-2 float-right" href="{% url 'cancel_exam' exam.id %}">Cancel exam</a>
+
+    {% for q in question_data %}
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+         
+          <p class="lead font-weight-bold">
+      
+    {{forloop.counter}}.
+    {{q.question_text}}<br>
+    A. {{q.option_1}}<br>
+    B. {{q.option_2}}<br>
+    C. {{q.option_3}}<br>
+    D. {{q.option_4}}<br>
+    Ans. {{q.correct_answer}}<br>
+    <a class="btn btn-success" href="{% url 'update_question' eid=exam.id  qid=q.id %} ">update</a>
+    <a class="btn btn-danger" href="{% url 'delete_question' eid=exam.id  qid=q.id %} ">delete</a>
+    <hr width="50%">
+    </p>
+</div>
+</div>
+    {% endfor %}
+  <script>
+//      localStorage.setItem(`{{subject}}`,21);
+  </script>
+  </div>
+</body>
+</html>

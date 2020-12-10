@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    valuelist=[]
+</script>
+<body onload="examTimer()">
+   
+    <p id="showtime"> time is</p>
+    <input type="number" name="taketime" onchange="settime(this.value)">
+    <form id="questionForm">
+        
+    <input type="text" name="name" value="" onchange="inputchange(this.value)">
+   
+    <input type="text" name="name" value="" onchange="inputchange(this.value)">
+    <input type="text" name="name" value="" onchange="inputchange(this.value)">
+   
+    <select id="ans" >
+        <option value="" name="op"></option>
+    </select>
+<br>
+<input type="submit">
+<a href="ajax_test.html">go</a>
+</form>
+<script>
+    //alert("start exam")
+</script>
+A <input type="radio" id="a" value=""> <br>
+A <input type="radio" id="b" value=""> <br>
+A <input type="radio" id="c" value=""> <br>
+A <input type="radio" id="d" value=""> <br>
+
+
+<script>
+    function settime(val) {
+        localStorage.setItem("examTime",val)
+        console.log(val)
+    }
+</script>
+    <script>
+        function checkede(val) {
+            console.log(val)
+        }
+    </script>
+    <script>
+        function inputchange(val) {
+            valuelist.push(val)
+            console.log(valuelist)
+            selectvalue()
+            
+            
+            
+            
+        }
+    </script>
+
+    <script>
+        function selectvalue() {
+        var cuisines = ["Chinese","Indian"];   
+       var list=document.getElementById('ans')
+       while(list.hasChildNodes()) {
+           list.removeChild(list.firstChild);
+       }
+var sel = document.getElementById('ans');
+for(var i = 0; i < valuelist.length; i++) {
+    var opt = document.createElement('option');
+    opt.innerHTML = valuelist[i];
+    opt.value = valuelist[i];
+    sel.appendChild(opt);
+}
+        }
+    </script>
+    
+
+
+    <script language ="javascript" >
+        var tim;       
+        var min =0;
+        var sec = 15;
+        var f = new Date();
+
+        function customSubmit(someValue){  
+        	 document.questionForm.minute.value = min;   
+        	 document.questionForm.second.value = sec; 
+             console.log("this is call")
+        	 document.questionForm.submit();  
+        	 }  
+             console.log(min)
+        function examTimer() {
+            
+            if (parseInt(sec) >0) {
+
+			    document.getElementById("showtime").innerHTML = "Time Remaining :"+min+" Minutes ," + sec+" Seconds";
+                sec = parseInt(sec) - 1;                
+                tim = setTimeout("examTimer()", 1000);
+            }
+            else {
+
+			    if (parseInt(min)==0 && parseInt(sec)==0){
+			    	document.getElementById("showtime").innerHTML = "Time Remaining :"+min+" Minutes ," + sec+" Seconds";
+				    // alert("Time Up");
+                    // document.getElementById("questionForm").submit();
+				    // document.questionForm.minute.value=0;
+				    // document.questionForm.second.value=0;
+				   
+
+			     }
+
+                if (parseInt(sec) == 0) {				
+				    document.getElementById("showtime").innerHTML = "Time Remaining :"+min+" Minutes ," + sec+" Seconds";					
+                    min = parseInt(min) - 1;
+					sec=59;
+                    tim = setTimeout("examTimer()", 1000);
+                }
+
+            }
+        }
+    </script>
+</body>
+</html>

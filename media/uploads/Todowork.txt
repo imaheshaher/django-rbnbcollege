@@ -1,0 +1,22 @@
+-React
+-----------Project--------------
+1.shopmart
+-first page 
+-post feature
+-product booking system
+-ask question
+
+2.event with react
+-
+
+3.farmer community -onion special
+4.farmer product sell
+5.farmer aplliances rent
+6.book exchange system
+7.polls app
+8.banking application
+9.about yourself
+10.share your past
+11. farm kharch management system
+12. online pets animal selling and buying system
+13. village community platform

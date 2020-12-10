@@ -1,0 +1,163 @@
+
+{% include 'base.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myUL li").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+<style>
+    .containers {
+        overflow: auto;
+        
+        height: 50vh;
+        padding: 25px;
+   
+    }
+    .receive {
+     
+     
+        background: #ebebeb none repeat scroll 0 0;
+        border-radius: 3px;
+        color: #646464;
+        font-size: 14px;
+        margin: 0;
+        padding: 5px 10px 5px 12px;
+        width: 100%;
+
+}
+.inbox {
+    background-color: gray;
+}
+.element {
+    display: inline-flex;
+    align-items: center;
+  }
+  i.fa-camera {
+    margin: 10px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+  i.fa-file {
+    margin: 10px;
+    cursor: pointer;
+    font-size: 30px;
+  }
+  i:hover {
+    opacity: 0.6;
+  }
+  input {
+    display: none;
+  }
+  .fix_chars{
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    word-break: break-all;
+  }
+</style>
+
+<div class="container">
+    Subject : {{subject.subject_name}}
+<br>
+Class : {{subject.class_name}} {{subject.department_name}}
+<a class="btn btn-info float-right mx-2 mb-2" href="{% url 'teacher_profile' %}">Dashboard</a>
+<input type="text" class="form-control mx-2 ml-2" name="search" id="myInput" placeholder="search">
+<div class="container containers">
+
+
+  
+    
+<h4 style="background-color:gray;text-align: center; color:white   ">Guide Student</h4>
+<hr>
+<div class="inbox">
+    {% for s in study_data %}
+    <div class="receive">
+        <ul class="list-group" id="myUL">
+        <li class="list-group-item">
+            <div class="float-left">
+                <a href="{% url 'delete_study_material' s.id %}" class="btn btn-danger btn-sm  " style="color: white;">delete</a>
+             </div>
+        <div class="float-right">
+            {{s.study_materail_date}}
+            {{s.study_material_time}}
+            
+        
+        </div>
+        <br>
+        <hr>
+        <h6 class="fix_chars">{{s.study_description}}</h6>
+        {% if s.study_file %}
+        <hr>
+       <h6>Attachment:   </h6> 
+        <a  href="/bcs/{{ s.study_file.url }}">
+            <p class="fix_chars">{{ s.study_file }}</p></a>
+ 
+        {% endif %}
+        {% if s.study_image %}
+        <hr>
+        <a href="/bcs/{{ s.study_image.url }}"><img src="/bcs/{{ s.study_image.url }}" class="d-block w-100" alt="..."></a>
+        {% endif %}
+     
+       <div class="float-right">
+        
+       </div>
+    </li>
+    </ul>
+    </div>
+    
+    {% endfor %}
+    </div>
+    </div>
+<br>
+<form method="POST"   enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-row mx-5">
+    <input type="text" class="form-control" name="study_description" autocomplete="off" required="true" placeholder="guide student" >
+    <br>
+    <div class="element">
+        <i class="fa fa-camera" id="imgicon"></i><span class="name">image</span>
+        <input type="file" name="study_image" id="img">
+      </div>
+      <div class="element">
+        <i class="fa fa-file" id="fileicon"></i><span class="name">File</span>
+        <input type="file" name="study_file" id="file">
+      </div>
+      
+    
+    
+    <button type="submit" class="col form-control" style="border: none; background: none;">
+    <i class="fa fa-send-o mx-2" style="font-size:30px;color:black"></i>
+</button>
+</div>
+
+</form>
+
+</div>
+<script>
+    $("#imgicon").click(function () {
+        $("#img").trigger('click');
+      });
+    
+      
+      $('input[type="file"]').on('change', function() {
+        var val = $(this).val();
+        $(this).siblings('span').text(val);
+      })
+    </script>
+<script>
+      $("#fileicon").click(function () {
+        $("#file").trigger('click');
+      });
+      
+      $('input[type="file"]').on('change', function() {
+        var val = $(this).val();
+        $(this).siblings('span').text(val);
+      })
+</script>

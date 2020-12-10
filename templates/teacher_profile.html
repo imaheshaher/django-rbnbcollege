@@ -1,0 +1,77 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teacher profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body, html {
+            height: 100%;
+          }
+          .bg {
+            /* The image used */
+            background-image: url("{% static 'images/bgimage.jpg' %}");
+          
+            /* Half height */
+            height: 50%;
+          
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            color: white;
+          }
+    </style>
+</head>
+<body>
+    {% include 'base.html' %}
+
+   <div class="container">
+   
+    <h2 class="text-center mb-4 mt-2 bg" style="background-color:gray;text-align: center; color:white   ">DashBoard</h2>
+    <!-- <h3 style="background-color: gray;text-align: center; color:white   ">Your Subjects </h3> -->
+   
+<hr>
+
+
+{% for t in teacher_data %}
+<div class="bg jumbotron jumbotron-fluid">
+    <div class="container">
+        
+    <h4>Class: {{t.subject.class_name}}  {{t.department_name}}
+        <br>
+        Subject: {{t.subject}}
+        <br>    
+        <div class="row mt-3">
+            <div class="col-my-2 mx-1 mb-2 ">
+                <a class="btn btn-info btn-sm " href="{% url 'show_student' t.subject.id %}">Students</a>
+            </div>
+            
+            <div class="col-my-2 mx-1 mb-2 ">
+                <a class="btn btn-warning btn-sm " href="{% url 'show_student' t.subject.id %}">Attendance</a>
+            </div>
+            <div class="col-my-2 mx-1 mb-2">
+                <a class="btn btn-dark btn-sm " href="{% url 'study_material' t.subject.id %}">Study Material</a>
+            </div>  
+            <div class="col-my-2 mx-1 mb-2">
+                <a class="btn btn-success btn-sm " href="{% url 'student_query' tid=teacher.id sid=t.subject.id %}">Discuss</a>
+            </div>
+            
+            <div class="col-my-2 mx-1 mb-2">
+                <a class="btn btn-primary btn-sm " href="{% url 'teacher_exam' %}" > Exam</a>
+            </div>  
+        </div>
+  
+</h4>
+   </div>
+   </div>
+    <hr>
+{% endfor %}
+</div>
+
+</body>
+</html>

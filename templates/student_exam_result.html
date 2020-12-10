@@ -1,0 +1,38 @@
+{% include 'base.html' %}
+<!DOCTYPE html
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam result</title>
+</head>
+<body>
+    <div class="container">
+        <h3 style="background-color: gray;text-align: center; color:white;margin-top: 2px;" >Result</h3>
+        
+        <h5>Subject : {{exam.subject}}</h5>
+    
+   <h5>Name:{{student.user.first_name}} {{student.user.last_name}} </h5> 
+    <h5>Total Score :{{marks.marks}}/{{marks.outof}}</h5>
+
+
+    <hr>
+    {% for s,d in sresult_data.items %}
+    {{forloop.counter}}. {{s}} <br>
+    {% ifequal s.correct_answer   d.student_answer %}
+    <div  style="color: green;">  Your Answer: {{d.student_answer}}</div>
+    {% else %}
+    <div style="color: red;">  Your Answer: {{d.student_answer}}</div>
+    {% endifequal %}
+    
+    <div style="color: green;"> correct answer:  {{s.correct_answer}}</div>
+    <hr  >
+   
+    {% endfor %}
+  
+
+
+</div>
+</body>
+</html>

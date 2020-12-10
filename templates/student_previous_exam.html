@@ -1,0 +1,41 @@
+{% include 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>previous exam</title>
+</head>
+<body>
+    
+    <div class="container">
+      <div class="table-responsive">
+        <table class="table mr-5 mt-5 " id="myTable">
+            <thead class="thead-dark text-uppercase">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Subject</th>
+                
+                <th scope="col">Teacher</th>
+                <th scope="col">Date</th>
+                <th scope="col">See Result</th>
+                
+              </tr>
+            </thead>
+            <tbody class="text-uppercase font-weight-bold">
+              
+                {% for e in pre_exam %}
+                <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{e.subject}}</td>
+                <td>{{e.teacher}}</td>
+                <td>{{e.exam_date}}</td>
+                <td><a href="{% url 'calculate_result' eid=e.id sid=e.subject.id %}">Result</a></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+            </table>    
+            </div>
+    </div>
+</body>
+</html>

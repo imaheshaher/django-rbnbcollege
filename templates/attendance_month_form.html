@@ -1,0 +1,45 @@
+<div class="modal-body">
+    
+  
+    
+    <form method="POST" action="{% url 'attendance_month_report' %}">
+        {% csrf_token %}
+       
+        <input type="text" name="subject_teacher" value="{{st.id}}" class="form-control" hidden>
+        <input type="text" name="subject_id" value="{{st.id}}" class="form-control" hidden>
+        
+           
+        <div class="row">
+            
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Start date</label>
+                <input type="date" name="start_date" class="form-control">
+                <span class="font-13 text-muted"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>End date</label>
+                <input type="date" name="end_date" class="form-control">
+                <span class="font-13 text-muted"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary waves-effect waves-light">
+            Submit
+        </button>
+        <button type="reset" class="btn btn-lite waves-effect waves-light">
+            Cancel
+        </button>
+    </div>
+</div>
+</div>
+        
+       
+    </form>
+</div>
+
+</div>

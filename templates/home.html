@@ -1,0 +1,142 @@
+{% load static %}
+{% include 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>student home</title>
+    <style>
+        .containers {
+            overflow: auto;
+            
+            height: 50vh;
+            padding: 25px;
+       
+        }
+        .receive {
+         
+         
+            background: #ebebeb none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #646464;
+            font-size: 14px;
+            margin: 0;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+    
+    }
+    .inbox {
+        background-color: gray;
+    }
+    .subject {
+        
+     font-weight: bold;
+        
+    }
+    body {
+        background-color: white;
+        }
+    .bg {
+        /* The image used */
+        background-image: url("{% static 'images/bgimage.jpg' %}");
+      
+        /* Half height */
+        height: 50%;
+      
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        color: white;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 class="text-info text-uppercase ">
+
+    Student : {{request.user.first_name}} {{request.user.last_name}} 
+    <br>
+    class : {{student.class_name}}
+        </h3>
+    <br>
+    <table class="table bg ">
+        <thead>
+          <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Teacher</th>
+            <th scope="col">Check</th>
+            
+          </tr>
+        </thead>
+        <tbody class="subject">
+            {% for s,t in subject.items %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{s}}</td>
+            <td>{{t}}</td>
+           <td><a href="{% url 'show_study_material' s.id %}" class="btn btn-primary btn-sm">check</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+          </table>
+   
+    
+    <!-- {% for s in subject %}
+    <ul class="list-group">
+        <li class="list-group-item text">
+   <a class="subject text-info  " href="{% url 'show_study_material' s.id %}"> {{s.subject_name}}</a>
+</li>
+</ul>
+   
+    {% endfor %} -->
+    <h3 class="text-center mt-2">
+        Notice Board
+    </h3>
+    <div class="containers">
+        <div class="inbox">
+            {% for ndata in notice_data %}
+            <div class="receive">
+                <ul class="list-group" id="myUL">
+                <li class="list-group-item font-weight-bold">
+                
+                <div class="col">
+                    from: {{ndata.teacher}}
+                </div>
+                <div class="col">
+                   {{ndata.notice_date}}
+        
+                   {{ndata.notice_time}}
+            
+                
+                </div>
+                <hr>
+                <h5> {{ndata.notice_description}}</h5>
+       
+                {% if ndata.notice_image %}
+                <hr>
+             <a href="/bcs/{{ndata.notice_image.url}}">   <img src="/bcs/{{ ndata.notice_image.url }}" class="d-block w-100" alt="..."></a>
+                {% endif %}
+                <hr>
+                
+                {% if ndata.notice_file %}
+                <h4>Attachment::</h4>
+                <a href="/bcs/{{ndata.notice_file.url}}">{{ndata.notice_file}}</a>
+                {% endif %}
+               <div class="float-right">
+                
+               </div>
+            </li>
+            </ul>
+            </div>
+            
+            {% endfor %}
+            </div>
+            </div>
+</div>
+</body>
+</html>

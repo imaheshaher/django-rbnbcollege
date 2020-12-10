@@ -1,0 +1,12 @@
+{% include 'base.html' %}
+
+
+<div class="container mt-2">
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit">
+</form>
+
+</div>

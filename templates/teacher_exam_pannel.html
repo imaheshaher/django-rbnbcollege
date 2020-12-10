@@ -1,0 +1,41 @@
+{% include 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teacher exam pannel</title>
+</head>
+<body>
+    <div class="container">
+    <h5>Exam Date:<u> {{exam.exam_date}}</u>
+        <br>
+        Subject: {{exam.subject}}
+        <br>
+        Class : {{exam.subject.class_name}}
+        </h5>
+    <hr>
+    <h3 style="background-color: gray;text-align: center; color:white   ">Questions </h3>
+    {% for d in question_data %}
+    
+
+    <script>
+        
+
+    </script>
+    <br>
+    <form method="POST" class="form-control" id="qform" data-url="{% url 'student_exam_data' %}">
+    {{forloop.counter}}.
+    {{d.question_text}}
+    <br>
+   A. <input type="radio"  name="{{d.id}}" value="{{d.option_1}}"  onclick="savechange({{d.id}})">{{d.option_1}}<br>
+   B. <input type="radio" name="{{d.id}}" value="{{d.option_2}}" onclick="savechange({{d.id}})">{{d.option_2}}<br>
+   C. <input type="radio" name="{{d.id}}"  value="{{d.option_3}}" onclick="savechange({{d.id}})">{{d.option_3}} <br>
+   D. <input type="radio"  name="{{d.id}}" value="{{d.option_4}}" onclick="savechange({{d.id}})">{{d.option_4}}<br>
+</form>
+    {% endfor %}
+ 
+    
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>student pannel</title>
+</head>
+<body>
+
+    <div>
+        <p style="margin: right; text-align: right;">
+            <a href="{% url 'logout' %}"> logout</a>
+        </p>
+        Name: {{request.user.first_name}} {{request.user.last_name}}
+        <br>
+        class Name : {{class_name}}
+    <h2>Todays Exam</h2>
+ 
+    {% for e in exam_data %}
+    {% if e %}
+        {{e.subject}}
+        <a href="{% url 'give_exam' eid=e.id %}">give exam</a>
+        
+        {% endif %}
+        <br>
+    {% endfor %}
+    
+        <h2> Exam</h2>
+        {% for prexam in prev_exam %}
+            {%  if prexam %}
+            {{prexam.subject}} {{prexam.exam_date}}
+            
+            <a href="{% url 'calculate_result' eid=prexam.id sid=request.user.id %}">result</a>
+            {% endif %}
+            <br>
+        {% endfor %}
+    <h3>Subjects Teachers</h3>
+    <hr>
+    <table >
+        <tr>
+            <th>NO</th>
+            <th>Subjects</th>
+            <th>Teachers</th>
+        </tr>
+    
+    {% for s,t in subject_teacher.items %}
+    <tr>
+        <th>{{forloop.counter}}</th>
+        <th>{{s}} </th>
+        <th> {{t.user.last_name}}  sir</th>
+    </tr>
+         
+    {% endfor %}
+</table>
+    
+    </div>
+
+</body>
+</html>

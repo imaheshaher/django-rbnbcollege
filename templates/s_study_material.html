@@ -1,0 +1,83 @@
+{% include 'base.html' %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myUL li").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+<style>
+    .receive {
+     
+     
+            background: #ebebeb none repeat scroll 0 0;
+            border-radius: 3px;
+            color: #646464;
+            font-size: 14px;
+            margin: 0;
+            padding: 5px 10px 5px 12px;
+            width: 100%;
+
+    }
+    .inbox {
+        background-color: gray;
+    }
+    .fix_chars{
+        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        word-break: break-all;
+      }
+</style>
+<div class="container">
+    <div class="text-center">
+        <div class="row"></div><h3 class="text-info">{{subject}}</h3>
+        
+        <h4>Guideline</h4>
+        {% if teacher %}   
+        <a href="{% url 'student_query' tid=teacher.id sid=subject.id %}" class="btn btn-info btn-sm float-right" >Ask Here?</a>
+        {% endif %}
+    </div>
+
+    <input type="text" class="form-control mb-2" name="search" id="myInput" placeholder="search">
+<div class="inbox">
+{% for s in study_data %}
+<div class="receive">
+    <ul class="list-group" id="myUL">
+       
+    <li class="list-group-item">
+        <div class="float-right">
+            {{s.study_materail_date}}
+            {{s.study_material_time}}
+            </div>
+            <br>
+            
+            <h6 class="fix_chars ">{{s.study_description}}</h6>
+            <br>
+            {% if s.study_file %}
+            <hr>
+           <h6>Attachment:   </h6> 
+            <a  href="/bcs/{{ s.study_file.url }}">
+                <p class="fix_chars">{{ s.study_file }}</p></a>
+     
+            {% endif %}
+            {% if s.study_image %}
+            <hr>
+            <a href="/bcs/{{ s.study_image.url }}"><img src="/bcs/{{ s.study_image.url }}" class="d-block w-100" alt="..."></a>
+            {% endif %}
+         
+       
+        
+    <div class="float-right">
+        
+        </div>
+    
+</li>
+</ul>
+</div>
+
+{% endfor %}
+</div>
+</div>

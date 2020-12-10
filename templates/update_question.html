@@ -1,0 +1,28 @@
+{% include 'base.html' %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>update question</title>
+</head>
+<body>
+    <div  class="container">
+        <h4>
+     <p class="text-center mt-2 font-weight-bold"> Update question 
+    <form method="POST" class="form-control">
+        {% csrf_token %}
+        Question{{form.question_text|add_class:'form-control'}}
+        Option 1:{{form.option_1|add_class:'form-control'}}
+        Option 2:{{form.option_2|add_class:'form-control'}}
+        Option 3:{{form.option_3|add_class:'form-control'}}
+        Option 4:{{form.option_4|add_class:'form-control'}}
+        Correct Answer: {{form.correct_answer|add_class:'form-control'}}
+        <input type="submit" class="btn btn-primary mt-2">
+    </form>
+</h4>
+</p>
+</div>
+</body>
+</html>

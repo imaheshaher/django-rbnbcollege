@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+     datalists = {
+         "answer" :  [
+             {"question_id":"1","option":""}
+         ]
+     }
+     datalist= [
+     {"question_id":"1","option":""}
+     ]
+  </script>
+   
+</head>
+<body>
+    <form id="qform">
+        <input type="text" id="fname" name="fname" onchange="savedata(this.value)">
+        <input type="text" id="lname" name="lname" onchange="savedata(this.value)">
+        <button type="button" onclick="savedata()">submit</button>
+    </form>
+
+
+ 
+<script>
+    function savedata(val) {
+        
+        var ar={"question_id":"3","option":val}
+        objIndex = datalist.findIndex((obj => obj.question_id == 3  ));
+        if(objIndex==1)
+            datalist[objIndex].option = val
+        else
+         datalist.push(ar)
+        console.log(datalist)
+        
+        //console.log(datalist)
+    }
+</script>
+<script>
+    function check() {
+        var ar={"question_id":"4","option":"namo"}
+        
+        objIndex = datalist.findIndex((obj => obj.question_id == 4));
+        if(objIndex==1)
+            datalist[objIndex].option = "Laila"
+        else
+        datalist.push(ar)
+    }
+</script>
+    <script>
+        $("#fnamea").change(function () {
+          console.log( $(this).val() );
+          var fname=$(this).val()
+          
+          var ar={'question_id':"2","option":fname}
+          datalist.push(ar)
+          var newdata=JSON.stringify(datalist)
+          
+        $.ajax({
+
+            url:'{% url "ajaxdata" %}',
+            
+            data : {
+                'userdata':newdata
+            },
+            dataType:'json',
+            success : function(data) {
+                console.log(data)
+            }
+        })
+
+        });
+      </script>
+</body>
+
+</html>

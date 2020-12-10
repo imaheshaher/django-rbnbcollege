@@ -1,0 +1,152 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teacher information</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color:black;
+        }
+        .card-f {
+            margin: 0 auto;
+            /* Added */
+            float: none;
+            /* Added */
+            margin-bottom: 10px;
+            /* Added */
+            background-color: teal;
+        }
+        .text-c {
+            text-align: center;
+            color: white;
+        }
+        .card-b {
+            background-color: white;
+            width:130px;
+            text-align: center;
+            align-items: center;
+            margin: auto;
+            border: solid;
+
+        }
+        .bg {
+            /* The image used */
+            background-image: url("{% static 'images/bgimage.jpg' %}");
+          
+            /* Half height */
+            height: 50%;
+          
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            
+            color: white;
+          }
+    </style>
+</head>
+
+<body>
+   
+    <div class="container">
+ 
+        
+            <a class="btn btn-info mt-3 mb-2 mr-3 card card-b bg" style="color:white;" href="{% url 'teacher_home' %}">Go to Home</a>
+       
+        <form id="teacher-form" method="POST" form-control mt-3" subject-url="{% url 'get_subject' %}">
+            {% csrf_token %}
+            <div class="card card-f bg" style="width: 18rem; height: 25rem; ">
+                <div class="card-body">
+                    <h5 class="card-title text-c"> Add Subject </h5>
+                    <h6 class="card-subtitle mb-2 text text-c">Explore Your Knowledge With Students</h6>
+                    <div style="color: white;">
+                    Department
+                    <div class="input-group mb-3">
+                        {{form.department_name|add_class:"custom-select"}}
+                        
+                    </div>
+                    Class
+                    <div class="input-group mb-3">
+                        <select class="custom-select" id="class-id" required>
+                            <option value="">Class...</option>
+                            <option value="FY">FY</option>
+                            <option value="SY">SY</option>
+                            <option value="TY">TY</option>
+                        </select>
+                    </div>
+                    Subject
+                    <div class="input-group mb-3">
+                        {{form.subject|add_class:"custom-select"}}
+                        
+                    </div>
+                    <div class="input-group mb-3">
+                    <input type="submit" class="btn btn-success">
+                    </div>  
+                </div>
+                </div>
+               
+            </div>
+        </form> 
+        <div class="card card-f bg" style="width: 18rem; height: 20rem; ">
+            <div class="card-body">
+            <h5 class="card-title text-c"> Subjects </h5>
+            <h6 class="card-subtitle mb-2  text-c">Explore Your Knowledge With Students</h6>
+            <hr>
+        {% for s in subjcet %}
+        <p style="color: white;">{{forloop.counter}}.  {{s.subject}} <a class="btn btn-danger btn-sm float-right " href="{% url 'delete_subject' s.id %}" style="color: white;">delete</a></p>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#class-id").change(function() {
+                var url = $("#teacher-form").attr('subject-url');
+                var class_name = $("#class-id").val();
+                var dept_name = $("#id_department_name").val();
+                console.log(dept_name)
+                $.ajax({
+                    url: url,
+                    data: {
+                        'class_name': class_name,
+                        'dept_name': dept_name,
+                    },
+                    success: function (data) {
+                        $("#id_subject").html(data);
+                       // console.log(data)
+                    }
+                })
+            })
+            })
+            $("#id_department_name").change(function() {
+                var url = $("#teacher-form").attr('subject-url');
+                var class_name = $("#class-id").val();
+                var dept_name = $("#id_department_name").val();
+                console.log(dept_name)
+                $.ajax({
+                    url: url,
+                    data: {
+                        'class_name': class_name,
+                        'dept_name': dept_name,
+                    },
+                    success: function (data) {
+                        $("#id_subject").html(data);
+                       // console.log(data)
+                    }
+                })
+            })
+           
+           
+       
+    </script>
+
+</body>
+
+</html>

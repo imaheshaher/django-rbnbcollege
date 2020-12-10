@@ -1,0 +1,250 @@
+{% include 'base.html' %}
+{% load widget_tweaks %}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 80px;
+        height: 34px;
+      }
+      
+      /* Hide default HTML checkbox */
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color:#eb3e3e;
+        -webkit-transition: .4s;
+        transition: .4s;
+        
+      }
+      
+      .slider:before {
+        position: absolute;
+        
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+
+        -webkit-transition: .4s;
+        transition: .4s;
+        
+      }
+      
+      input:checked + .slider {
+        background-color:#28a745;
+        
+      }
+      
+      input:focus + .slider {
+        box-shadow: 0 0 1px #28a745;
+      }
+      
+      input:checked + .slider:before {
+        -webkit-transform: translateX(14px);
+        -ms-transform: translateX(14px);
+        transform: translateX(8px);
+        content: "prsent";
+      }
+      
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+        
+      }
+      
+      .slider.round:before {
+        border-radius: 50%;
+        content: "absent";
+      }
+</style>
+<div class="container">
+    
+    
+    <form method="POST" action="{% url 'update_attendance' 11 %}">
+        
+        {% csrf_token %}
+       
+        <input type="text" name="subject_teacher" value="{{st.id}}" class="form-control" hidden>
+        <input type="text" name="subject_id" value="{{st.subject.id}}" class="form-control" hidden>
+        
+        
+        
+        <div class="row">
+            
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Start Time</label>
+                {{form.lect_start_time|add_class:"form-control"}}
+            
+                <span class="font-13 text-muted"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>End Time</label>
+                {{form.lect_start_time|add_class:"form-control"}}
+                <span class="font-13 text-muted"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+            <div class="form-group">
+                <label>Date</label>
+                {{form.attendance_date|add_class:"form-control"}}
+                <span class="font-13 text-muted"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Status</label>
+                {{form.status|add_class:"form-control"}}
+                <span class="font-13 text-muted"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-primary waves-effect waves-light">
+            Submit
+        </button>
+        <button type="reset" class="btn btn-lite waves-effect waves-light">
+            Cancel
+        </button>
+    </div>
+</div>
+</div>
+
+        
+       
+    </form>
+
+<div class="container">
+<input type="text" id="myInput" class="form-control mb-2 mt-3" placeholder="Search student">
+<div class="table-responsive">
+
+<table class="table mr-5" id="myTable">
+    <thead class="thead-dark text-uppercase">
+      <tr>
+        <th scope="col">No</th>
+        
+        <th scope="col">Last Name</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Mobile Number</th>
+        <th scope="col">Roll Number</th>
+        <th scope="col" >Attendance</th>
+        
+      </tr>
+    </thead>
+    <tbody class="text-uppercase font-weight-bold">
+      <tr>
+        {% for s in stud %}
+        
+        <th scope="row">{{forloop.counter}}</th>
+        
+        <td>{{s.user.last_name}}</td>
+        <td>{{s.user.first_name}}</td>
+        <td>{{s.user.username}}</td>
+        <td>{{s.roll_no}}</td>
+        <form method="post" action="{% url 'take_attendance' sid=sub_id tat_id=tat_id %}">
+          {% csrf_token %}
+        <!-- <td><input type="checkbox" checked name="checktoggle" onchange="toggleOffByInput()" value="1"  data-toggle="toggle" data-on="Present" data-off="Absent" data-onstyle="success" data-offstyle="danger">
+        
+        </td> -->
+        <td>
+            {% for sattend in stud_attend %}
+                {% ifequal sattend.student.id s.id %}
+                <div  >
+                    
+                      <!-- Rounded switch -->
+                      <label class="switch">
+                        {% if sattend.attendance %}
+                        <input type="checkbox" id="check" name="{{s.id}}" value="present"  checked>
+                        {% else %}
+                        <input type="checkbox" id="check" name="{{s.id}}" value="present"  >
+                        {% endif %}
+                        <span class="slider round"> </span>
+                      </label>
+                      
+                
+            </div>
+          <!-- <div class="btn-group btn-group-toggle" id="attend" data-toggle="buttons">
+            
+            <label class="btn btn-outline-success {% if sattend.attendance %} active {% endif %}">
+                
+                <input type="checkbox" name="{{ sattend.student.id }}" id="option1" autocomplete="off" value="present"  checked> Present
+            </label>
+           
+            <label class="btn btn-outline-danger ">
+                <input type="checkbox" name="{{ sattend.student.id }}" id="option2" autocomplete="off" value="absent" > Absent
+            </label>
+            
+    </div> -->
+    {% endifequal %}
+    {% endfor %}
+        
+    
+        </td>
+      
+      </tr>                                                   
+    {% endfor %}
+    
+      
+      
+        
+        
+      
+     
+    </tbody>
+  </table>
+</div>
+<input class="btn btn-success" type="submit" value="Submit">
+
+</form>
+</div>
+</div>
+
+
+
+<script>
+    function present() {
+        var a=document.getElementById("present").value="present"
+        console.log(a)
+        
+    }
+    function toggleOn() {
+      $('#toggle-trigger').bootstrapToggle('on')
+    }
+    function toggleOff() {
+      $('#toggle-trigger').bootstrapToggle('off') 
+      console.log("fun clled") 
+    }
+    function toggleOnByInput() {
+      $('#toggle-trigger').prop('checked', true).change()
+    }
+    function toggleOffByInput() {
+      $('#toggle-trigger').prop('checked', false).change()
+    }
+  </script>
+  <script>
+    $(document).ready(function() {
+        $("#switch").click(function() {
+            var checkBoxes = document.getElementById("check");
+            checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+        });                 
+    });
+  </script>

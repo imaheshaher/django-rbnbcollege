@@ -1,0 +1,180 @@
+{% include 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>students</title>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<style>
+  .toggle.android { border-radius: 0px;}
+  .toggle.android .toggle-handle { border-radius: 5px; }
+</style>  
+</head>
+<body>
+    <div class="container">
+    <h4 >
+    Class Name : {{subject.class_name}} {{subject.department_name}}
+    <br>
+    Subject : {{subject}}
+    <br>
+    Teacher: {{request.user.first_name}} {{request.user.last_name}} 
+</h4>
+    <hr>
+    <div class="text-center">
+      <a class="btn btn-info mb-2" href="{% url 'teacher_profile' %}">Dashboard</a>
+    </div>
+    <div class="text-center">
+    
+      
+      <a class="btn btn-success mb-2  float-right" href="#" onclick="EmailPopUp({{teacher_subject.id}});" data-toggle="modal" data-target="#viewcatmodal">Take Attendance</a>
+      <a class="btn btn-primary mb-2 mr-2 float-left" href="{% url 'attendance_detail' subject.id %}">Attendance Detail</a>
+      
+      <a class="btn btn-warning mb-2  float-left" href="#" onclick="AttendancePop({{subject.id}});" data-toggle="modal" data-target="#attendanceid">Generate Report</a>
+      
+    </div>
+    
+    <input type="text" id="myInput" class="form-control mb-2" placeholder="Search student">
+    <div class="table-responsive">
+    <table class="table mr-5 " id="myTable">
+        <thead class="thead-dark text-uppercase">
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Mobile Number</th>
+            
+            
+          </tr>
+        </thead>
+        <tbody class="text-uppercase font-weight-bold">
+          <tr>
+            {% for s in student_data %}
+            
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{s.user.last_name}}</td>
+            <td>{{s.user.first_name}}</td>
+            <td>{{s.user.username}}</td>
+            
+          </tr>                                                   
+        {% endfor %}
+            
+          
+            
+            
+          
+         
+        </tbody>
+      </table>
+    </div>
+ 
+
+
+</div>
+<div id="viewcatmodal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                                
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="standard-modalLabel">Attendance Detail</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="col-md-6">
+            Subject:{{subject}}
+          </div>
+          <div class="col-md-8">
+            Class: {{subject.class_name}} {{subject.department_name}} 
+          </div>
+          <span id="view_catagory">
+             
+          </span>
+
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<div id="attendanceid" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                                
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="standard-modalLabel">Attendance Detail</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+          <div class="col-md-6">
+            Subject:{{subject}}
+          </div>
+          <div class="col-md-8">
+            Class: {{subject.class_name}} {{subject.department_name}} 
+          </div>
+          <span id="view_attendance">
+             
+          </span>
+
+      </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script>
+         
+      function EmailPopUp(value){
+
+          $.ajax({
+              type: 'GET',
+              data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+              },
+              url : "/bcs/attendance/" + value,
+              success: function(data) {
+              
+                      console.log(data);
+                      
+                       setTimeout(function(){  $('#viewcatmodal').modal('show'); }, 3000);
+                       $('#view_catagory').html(data).show();
+                  
+              
+              }
+          });
+
+          }
+      </script>
+       <script>
+         
+        function AttendancePop(value){
+  
+            $.ajax({
+                type: 'GET',
+                data: {
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                url : "/bcs/attendance/month/form/" +value ,
+                success: function(data) {
+                
+                        console.log(data);
+                        
+                         setTimeout(function(){  $('#attendanceid').modal('show'); }, 3000);
+                         $('#view_attendance').html(data).show();
+                    
+                
+                }
+            });
+  
+            }
+        </script>
+</body>
+</html>
